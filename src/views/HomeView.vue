@@ -1,7 +1,8 @@
 <script setup>
 import ProductList from '@/components/ProductList.vue'
 import CartList from '@/components/CartList.vue'
-import { ref } from 'vue'
+import MessageToast from '@/components/MessageToast.vue'
+import { ref, provide } from 'vue'
 
 const data = [
   {
@@ -48,6 +49,29 @@ const data = [
 
 const productList = ref(data)
 const cartList = ref([])
+const messageText = ref([1,2,3])
+const isShow = ref(false)
+
+provide('message', {
+  messageText, 
+  isShow
+})
+
+const createMessage = (text) => {
+  const id = new Date().getTime()
+  messageText.value.push({
+    id,
+    text,
+  })
+  isShow.value = true
+  setTimeout(() => {
+    const index = messageText.value.findIndex((i) => i.id === id)
+    if(index !== -1){
+      messageText.value.splice(index, 1)
+    }
+    isShow.value = false
+  }, 3000)
+}
 
 const addCart = (product) => {
   const cartItem = cartList.value.find((i) => i.id === product.id)
@@ -59,14 +83,17 @@ const addCart = (product) => {
       qty: 1,
     })
   }
+  createMessage('已新增物品')
 }
 
 const removeItem = (itemId) => {
   cartList.value = cartList.value.filter((i) => i.id !== itemId)
+  createMessage('已刪除物品')
 }
 </script>
 
 <template>
+  <MessageToast />
   <div id="app" class="container py-4">
     <div class="row">
       <ProductList :productList="productList" :addCart="addCart" />
