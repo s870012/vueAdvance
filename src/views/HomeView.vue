@@ -49,24 +49,25 @@ const data = [
 
 const productList = ref(data)
 const cartList = ref([])
-const messageText = ref([1,2,3])
+const messageText = ref([])
 const isShow = ref(false)
 
 provide('message', {
-  messageText, 
-  isShow
+  messageText,
+  isShow,
 })
 
-const createMessage = (text) => {
+const createMessage = (text, status) => {
   const id = new Date().getTime()
   messageText.value.push({
     id,
     text,
+    status,
   })
   isShow.value = true
   setTimeout(() => {
     const index = messageText.value.findIndex((i) => i.id === id)
-    if(index !== -1){
+    if (index !== -1) {
       messageText.value.splice(index, 1)
     }
     isShow.value = false
@@ -83,12 +84,12 @@ const addCart = (product) => {
       qty: 1,
     })
   }
-  createMessage('已新增物品')
+  createMessage('已新增商品', true)
 }
 
 const removeItem = (itemId) => {
   cartList.value = cartList.value.filter((i) => i.id !== itemId)
-  createMessage('已刪除物品')
+  createMessage('已刪除商品', false)
 }
 </script>
 
