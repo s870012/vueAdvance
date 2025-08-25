@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps } from 'vue'
+// import { defineProps } from 'vue'
 
 defineProps(['productList', 'addCart'])
 </script>
@@ -11,11 +11,11 @@ defineProps(['productList', 'addCart'])
       <div class="col-md-4 mb-4" v-for="product in productList" :key="product.id">
         <div class="card h-100">
           <img :src="product.imgUrl" class="card-img-top" />
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title">{{ product.title }}</h5>
             <p class="card-text">{{ product.content }}</p>
             <p class="fw-bold text-primary">$ {{ product.price }}</p>
-            <button class="btn btn-success w-100" @click="addCart(product)">加入購物車</button>
+            <button class="btn btn-success w-100 mt-auto" @click="addCart(product)">加入購物車</button>
           </div>
         </div>
       </div>
